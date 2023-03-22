@@ -18,6 +18,3 @@ RUN pacman -S --noconfirm \
   htop \
   tmux 
 
-RUN useradd -m -G wheel kitsune
-ADD ./subfiles/bashrc /home/kitsune/.bashrc
-ADD ./subfiles/aliasrc /home/kitsune/.aliasrc
