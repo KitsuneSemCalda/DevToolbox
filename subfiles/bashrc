@@ -15,4 +15,5 @@ tput reset
 
 [[ -s "$HOME/.xmake/profile" ]] && source "$HOME/.xmake/profile" # load xmake profile
 
+tmux
 tput reset
