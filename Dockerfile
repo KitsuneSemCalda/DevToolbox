@@ -50,7 +50,8 @@ RUN pacman -S --noconfirm \
   yarn  \
   nasm  \
   git   \
-  git-lfs 
+  git-lfs \
+  glow
 
 
 # Configure sudo to run without password to group wheel
