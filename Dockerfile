@@ -7,8 +7,6 @@ ARG NEOVIM_VERSION=0.8
 ARG USER
 ARG USER_HOME
 
-RUN hostname toolbox
-
 # Configure Pacman with Chaotic Aur
 RUN pacman-key --init \
   && pacman-key --populate archlinux \
@@ -30,7 +28,11 @@ RUN pacman -S --noconfirm \
   tmux \
   neovim \
   sudo \
-  base-devel
+  base-devel \
+  inetutils
+
+# Configure the hostname to toolbox
+ENV HOSTNAME toolbox
 
 # Install someone utilities to development
 RUN pacman -S --noconfirm \
@@ -40,6 +42,7 @@ RUN pacman -S --noconfirm \
   xorriso \
   elixir \
   grub \
+  mtools \
   qemu \
   clang \
   cargo \
@@ -50,7 +53,7 @@ RUN pacman -S --noconfirm \
   git   \
   git-lfs 
 
-# Install lunarvim
+
 # Configure sudo to run without password to group wheel
 RUN sed -i 's/^# %wheel\s\+ALL=(ALL)\s\+ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 RUN echo -e "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -62,5 +65,6 @@ RUN chown -R ${USER}:$(id -g $USER) ${USER_HOME}
 
 USER ${USER}
 
+# Install lunarvim
 RUN LV_BRANCH="release-${LUNARVIM_VERSION}/neovim-${NEOVIM_VERSION}" \
     bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/fc6873809934917b470bff1b072171879899a36b/utils/installer/install.sh) -y
