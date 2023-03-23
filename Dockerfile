@@ -7,6 +7,8 @@ ARG NEOVIM_VERSION=0.8
 ARG USER
 ARG USER_HOME
 
+RUN hostname toolbox
+
 # Configure Pacman with Chaotic Aur
 RUN pacman-key --init \
   && pacman-key --populate archlinux \
