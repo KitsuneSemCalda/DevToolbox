@@ -24,6 +24,7 @@ if [[ -f "/usr/local/bin/toolkit/create_docker.sh" ]]; then
 else
   chmod +x "tools/create_docker.sh"
   cp "tools/create_docker.sh" "/usr/local/bin/toolkit"
+  ln -sf "/usr/local/bin/toolkit/create_docker.sh" "/usr/bin/create_docker"
 fi
 
 if [[ -f "/usr/local/bin/toolkit/launch_toolkit.sh" ]]; then
@@ -31,6 +32,7 @@ if [[ -f "/usr/local/bin/toolkit/launch_toolkit.sh" ]]; then
 else
   chmod +x "tools/launch_toolkit.sh"
   cp "tools/launch_toolkit.sh" "/usr/local/bin/toolkit"
+  ln -sf "/usr/local/bin/toolkit/launch_toolkit.sh" "/usr/bin/launch_toolkit"
 fi
 
 if [[ -f "/usr/local/bin/toolkit/cleanup_docker.sh" ]]; then
@@ -38,11 +40,13 @@ if [[ -f "/usr/local/bin/toolkit/cleanup_docker.sh" ]]; then
 else
   chmod +x "tools/cleanup_docker.sh"
   cp "tools/cleanup_docker.sh" "/usr/local/bin/toolkit/"
+  ln -sf "/usr/local/bin/toolkit/cleanup_docker.sh" "/usr/bin/cleanup_docker"
 fi
 
-ln -sf "/usr/local/bin/toolkit/create_docker.sh" "/usr/bin/create_docker"
+
+
 cp "Dockerfile" "/usr/local/bin/toolkit/"
-ln -sf "/usr/local/bin/toolkit/launch_toolkit.sh" "/usr/bin/launch_toolkit"
+
 
 COMMAND="/usr/local/bin/toolkit/docker-cleanup.sh"
 
