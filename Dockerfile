@@ -5,6 +5,7 @@ ARG LUNARVIM_VERSION=1.2
 ARG NEOVIM_VERSION=0.8
 
 ARG USER
+ARG USER_HOME
 
 # Configure Pacman with Chaotic Aur
 RUN pacman-key --init \
@@ -53,6 +54,9 @@ RUN sed -i 's/^# %wheel\s\+ALL=(ALL)\s\+ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /et
 RUN echo -e "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 RUN useradd -g wheel ${USER}
+RUN mkdir ${USER_HOME}
+
+RUN chown -R ${USER}:${USER} ${USER_HOME}
 
 USER ${USER}
 
