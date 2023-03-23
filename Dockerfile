@@ -36,7 +36,6 @@ ENV HOSTNAME toolbox
 
 # Install someone utilities to development
 RUN pacman -S --noconfirm \
-  neovim \
   xmake \
   asdf-vm \
   xorriso \
