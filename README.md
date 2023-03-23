@@ -80,6 +80,7 @@ This script run all possible prune to clean docker before execution
 - nasm  
 - git   
 - git-lfs
+- glow
 
 ### Contributing
 
