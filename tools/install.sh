@@ -44,4 +44,8 @@ ln -sf "/usr/local/bin/toolkit/create_docker.sh" "/usr/bin/create_docker"
 cp "Dockerfile" "/usr/local/bin/toolkit/"
 ln -sf "/usr/local/bin/toolkit/launch_toolkit.sh" "/usr/bin/launch_toolkit"
 
-echo "*/5 * * * * root /usr/local/bin/toolkit/docker-cleanup.sh > /dev/null 2>&1" >> /etc/crontab
+COMMAND="/usr/local/bin/toolkit/docker-cleanup.sh"
+
+if ! crontab -l | grep -q "$COMMAND"; then
+  (crontab -l 2>/dev/null; echo "*/5 * * * * $COMMAND") | crontab -
+fi
