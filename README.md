@@ -1,31 +1,94 @@
-# Development Tools Container
+# Toolbox
 
-This project is a custom Dockerfile to create a container with the development tools I use regularly. The container has been configured to simplify the installation and configuration of these tools across different development environments, saving time and effort.
+This repository contains the files needed to create a Docker container based development environment for Arch Linux, with some utilities and configurations pre-installed.
 
-## Usage
+## How to use
 
-To use the development tools container, follow the steps below:
+### Prerequisites
+ - Docker installed.
 
-1. Clone this repository: `git clone https://github.com/yourusername/repositoryname.git`
-2. Navigate to the repository directory: `cd repositoryname`
-3. Build the container: `docker build -t imagename .`
-4. Run the container: `docker run -it imagename`
+#### Cloning the repository
+Clone the repository on your local machine:
 
-The `docker build` command compiles the Dockerfile and creates the container image. The `-t` argument allows you to assign a name to the image. In the example above, the image name is `imagename`. The dot at the end indicates that the Dockerfile is in the current directory.
 
-The `docker run` command runs the container based on the created image. The `-it` argument allows you to access the container's interactive terminal.
+```bash
+git clone https://github.com/KitsuneSemCalda/DevToolbox
+cd DevToolbox
+```
 
-## Tools
+#### Install helpers
 
-- Lunarvim
-- Clang
-- Asdf
-- Xmake
+The install needs a root to configure the /usr/bin
 
-## Contributing
+```bash
+sudo bash tools/install.sh
+```
 
-If you have suggestions or improvements for the Dockerfile, feel free to open an issue or pull request in this repository.
+This commands copy the dockerfile and the scripts to /usr/local/bin/toolkit/
 
-## License
+After this, create symlinks to /usr/bin/create_docker /usr/bin/launch_toolkit
 
-This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for more information.
+#### Build the image
+
+```bash
+create_docker
+```
+
+Create docker is a script to run docker build with principal configs of dockerfile. He passes of transparent form the args:
+
+- USER
+- HOME
+
+#### Start the container
+
+```bash
+launch_toolkit
+```
+
+This script run the toolbox passing the real $HOME to container $HOME
+
+#### Cleaning the system
+
+```bash
+cleanup_docker
+```
+
+This script run all possible prune to clean docker before execution
+
+## Installed
+
+- bat  
+- exa 
+- htop 
+- tmux 
+- neovim 
+- sudo 
+- base-devel 
+- inetutils
+- xmake 
+- asdf-vm 
+- xorriso 
+- elixir 
+- grub 
+- mtools 
+- qemu 
+- clang 
+- cargo 
+- rust  
+- npm   
+- yarn  
+- nasm  
+- git   
+- git-lfs
+
+### Contributing
+
+If you'd like to contribute to this project, feel free to open an issue or submit a pull request. If you plan to submit a pull request, please be sure to follow these guidelines:
+
+Make a branch and work on your own branch.
+Make sure your commits are self-explanatory.
+Make sure your code follows best practices and is properly tested.
+
+### License
+
+This source uses the Apache License
