@@ -1,35 +1,60 @@
 FROM archlinux:latest
+
 ARG PACMAN_PARALLEL_DOWNLOADS=25
+ARG LUNARVIM_VERSION=1.2
+ARG NEOVIM_VERSION=0.8
+
+ARG USER
+
+# Configure Pacman with Chaotic Aur
 RUN pacman-key --init \
   && pacman-key --populate archlinux \
-  && sed 's/ParallelDownloads = \d+/ParallelDownloads = ${PACMAN_PARALLEL_DOWNLOADS}/g' -i /etc/pacman.conf \
   && pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com \
   && pacman-key --lsign-key FBA220DFC880C036 \
-  && pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
+  && pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm \
+  && echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf 
 
-RUN echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+# Configure Pacman configs
+RUN sed 's/ParallelDownloads = \d+/ParallelDownloads = ${PACMAN_PARALLEL_DOWNLOADS}/g' -i /etc/pacman.conf \
+  && sed 's/NoProgressBar/#NoProgressBar/g' -i /etc/pacman.conf\
+  && pacman -Sy
 
-ADD https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh /usr/bin/get-new-mirrors
-RUN chmod +x /usr/bin/get-new-mirrors
-
-RUN pacman -Sy
-
+# Install someone utilities used
 RUN pacman -S --noconfirm \
   bat \
   exa \
-  fd \
-  duf \
-  git \
-  git-lfs \
   htop \
-  tmux 
-
-RUN pacman -S --noconfirm \
-  clang \
-  base-devel \
-  xmake \
-  grub \
-  fuse-overlayfs \
+  tmux \
   neovim \
-  ripgrep 
+  sudo \
+  base-devel
 
+# Install someone utilities to development
+RUN pacman -S --noconfirm \
+  neovim \
+  xmake \
+  asdf-vm \
+  xorriso \
+  elixir \
+  grub \
+  qemu \
+  clang \
+  cargo \
+  rust  \
+  npm   \
+  yarn  \
+  nasm  \
+  git   \
+  git-lfs 
+
+# Install lunarvim
+# Configure sudo to run without password to group wheel
+RUN sed -i 's/^# %wheel\s\+ALL=(ALL)\s\+ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
+RUN echo -e "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+RUN useradd -g wheel ${USER}
+
+USER ${USER}
+
+RUN LV_BRANCH="release-${LUNARVIM_VERSION}/neovim-${NEOVIM_VERSION}" \
+    bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/fc6873809934917b470bff1b072171879899a36b/utils/installer/install.sh) -y
