@@ -56,7 +56,7 @@ RUN echo -e "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN useradd -g wheel ${USER}
 RUN mkdir ${USER_HOME}
 
-RUN chown -R ${USER}:${USER} ${USER_HOME}
+RUN chown -R ${USER}:$(id -g $USER) ${USER_HOME}
 
 USER ${USER}
 
