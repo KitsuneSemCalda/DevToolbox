@@ -29,7 +29,8 @@ RUN pacman -S --noconfirm \
   neovim \
   sudo \
   base-devel \
-  inetutils
+  inetutils \
+  tzdata
 
 # Configure the hostname to toolbox
 ENV HOSTNAME toolbox
@@ -52,7 +53,8 @@ RUN pacman -S --noconfirm \
   git   \
   git-lfs \
   glow \
-  musl
+  musl \
+  lld 
 
 
 # Configure sudo to run without password to group wheel
@@ -65,6 +67,8 @@ RUN mkdir ${USER_HOME}
 RUN chown -R ${USER}:$(id -g $USER) ${USER_HOME}
 
 USER ${USER}
+
+ENV TZ=America/Sao_Paulo
 
 # Install lunarvim
 RUN LV_BRANCH="release-${LUNARVIM_VERSION}/neovim-${NEOVIM_VERSION}" \
