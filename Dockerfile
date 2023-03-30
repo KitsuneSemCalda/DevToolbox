@@ -55,7 +55,9 @@ RUN pacman -S --noconfirm \
   glow \
   musl \
   lld \
-  hugo
+  hugo \
+  vulkan-headers \
+  gcc-fortran
 
 
 # Configure sudo to run without password to group wheel
